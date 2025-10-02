@@ -14,22 +14,26 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
+    //std::ifstream inputFile("input.txt", std::ios::binary);
+    //std::vector<uint8_t> data = file::extractBytes(inputFile);
+
     std::vector<uint8_t> rawData = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
 
     aes::AES256Context context;
 
     aes::generateRoundKeys(context, "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
 
-    
-
     std::vector<uint8_t> newData = aes::ecb::encrypt(context, rawData);
 
-    std::vector<aes::AESBlock> blocks = aes::util::convertToAESBlocks(newData);
+    std::vector<uint8_t> decrypt = aes::ecb::decrypt(context, newData);
 
-    aes::util::printBlock(blocks[0]);
+    for (uint8_t j : decrypt) {
+        std::cout << std::hex << (size_t)j << '\n';
+    }
 
+   
 
-
+    std::cout << "done";
 
 
 

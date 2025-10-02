@@ -26,12 +26,10 @@ namespace aes {
 	void generateRoundKeys(AES256Context& context, const std::string& hexString);
 	void generateRoundKeys(AES256Context& context, std::array<uint8_t, 32> bytes);
 
-	
-
-	
 
 	namespace ecb {
 		std::vector<uint8_t> encrypt(AES256Context& context, std::vector<uint8_t>& raw_data);
+		std::vector<uint8_t> decrypt(AES256Context& context, std::vector<uint8_t>& raw_data);
 	}
 
 	namespace key_sched {
@@ -64,6 +62,7 @@ namespace aes {
 
 	namespace util {
 		void applyPKCS7padding(std::vector<uint8_t>& data);
+		void removePKCS7padding(std::vector<uint8_t>& data);
 		std::vector<AESBlock> convertToAESBlocks(const std::vector<uint8_t> &data);
 		std::vector<uint8_t> convertToRawData(std::vector<AESBlock>& blocks);
 

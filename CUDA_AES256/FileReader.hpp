@@ -18,11 +18,9 @@ namespace file {
 		return size;
 	}
 
-	inline void extractBytes(std::ifstream& inputFile, std::vector<char>& dataVector, std::streamsize filesize) {
-		if (!(inputFile.read(dataVector.data(), filesize))) {
-			std::cerr << "Error reading file." << std::endl;
-			return;
-		}
+	inline std::vector<uint8_t> extractBytes(std::ifstream& inputFile) {
+		std::vector<uint8_t> bytes((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
+		return bytes;
 	}
 
 	inline void closeFile(std::ifstream& inputFile) {

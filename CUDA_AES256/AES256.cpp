@@ -52,6 +52,33 @@ namespace aes {
             std::vector<uint8_t> newData = util::convertToRawData(blocks);
             return newData;
         }
+
+        std::vector<uint8_t> decrypt(AES256Context& context, std::vector<uint8_t>& raw_data) {
+            std::vector<AESBlock> blocks = util::convertToAESBlocks(raw_data);
+
+            for (AESBlock& block : blocks) {
+                transform::addRoundKey(block, context.roundkeys[14]);
+            }
+
+            for (int i = 13; i > 0; i--) {
+                for (AESBlock& block : blocks) {
+                    transform::inverseShiftRows(block);
+                    transform::inverseSubBytes(block);
+                    transform::addRoundKey(block, context.roundkeys[i]);
+                    transform::inverseMixColumns(block);
+                }
+            }
+
+            for (AESBlock& block : blocks) {
+                transform::inverseShiftRows(block);
+                transform::inverseSubBytes(block);
+                transform::addRoundKey(block, context.roundkeys[0]);
+            }
+
+            std::vector<uint8_t> newData = util::convertToRawData(blocks);
+            util::removePKCS7padding(newData);
+            return newData;
+        }
     }
 
     namespace key_sched {
@@ -178,6 +205,13 @@ namespace aes {
             uint8_t padValue = 16 - (data.size() % 16);
             for (uint8_t i = 0; i < padValue; i++) {
                 data.push_back(padValue);
+            }
+        }
+
+        void removePKCS7padding(std::vector<uint8_t>& data) {
+            uint8_t remove = data[data.size() - 1];
+            for (uint8_t i = 0; i < remove; i++) {
+                data.pop_back();
             }
         }
 
