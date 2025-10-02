@@ -12,9 +12,14 @@ namespace aes {
         }
     }
 
-	namespace ecb {
+    void generateRoundKeys(AES256Context& context, const std::string& hexString) {
+        std::vector<uint8_t> bytes = util::parseHexString(hexString);
+        std::array<uint8_t, 32> byteArray;
+        std::copy(bytes.begin(), bytes.end(), byteArray.begin());
+        key_sched::expandWords(byteArray);
+        generateRoundKeys(context, byteArray);
+    }
 
-	}
     namespace key_sched {
         std::array<uint32_t, 60> expandWords(std::array<uint8_t, 32> keyBytes) {
             std::array<uint32_t, 60> output;
@@ -182,16 +187,6 @@ namespace aes {
                 y |= (bit << i);
             }
             return y;
-        }
-
-        void getBytesFromKeyString(std::array<uint8_t, 32>& bytes, const std::string& key) {
-            if (key.length() != 32) {
-                std::cerr << "Key length is not 32 characters.";
-            }
-            for (size_t i = 0; i < 32; i += 2) {
-                std::string hex = "";
-                //hex += 
-            }
         }
 
         void printBlock(AESBlock block) {

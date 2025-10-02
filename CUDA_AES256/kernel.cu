@@ -27,14 +27,14 @@ int main()
     aes::AES256Context context;
 
     std::string key = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f";
-    std::vector<uint8_t> bytes = aes::util::parseHexString(key);
-    std::array<uint8_t, 32> b;
-    std::copy(bytes.begin(), bytes.end(), b.begin());
-    std::array<uint32_t, 60> expand = aes::key_sched::expandWords(b);
-    for (uint32_t key : expand) {
-        //std::cout << key << '\n';
-    }
-    aes::generateRoundKeys(context, b);
+    //std::vector<uint8_t> bytes = aes::util::parseHexString(key);
+    //std::array<uint8_t, 32> b;
+    //std::copy(bytes.begin(), bytes.end(), b.begin());
+    //std::array<uint32_t, 60> expand = aes::key_sched::expandWords(b);
+    //for (uint32_t key : expand) {
+    //    //std::cout << key << '\n';
+    //}
+    aes::generateRoundKeys(context, key);
     aes::AESBlock block;
     aes::transform::addRoundKey(block, context.roundkeys[0]);
     aes::transform::shiftRows(block);

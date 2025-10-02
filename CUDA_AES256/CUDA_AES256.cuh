@@ -22,16 +22,9 @@ namespace aes {
 		uint32_t expandedWords[60] = { 0 };
 	} AES256Context;
 
-	
-
-
+	void generateRoundKeys(AES256Context& context, const std::string& hexString);
 	void generateRoundKeys(AES256Context& context, std::array<uint8_t, 32> bytes);
 	
-
-	namespace ecb {
-
-	}
-
 	namespace key_sched {
 		std::array<uint32_t, 60> expandWords(std::array<uint8_t, 32> keyBytes);
 		static const uint32_t rcon_array[11] = {
@@ -76,7 +69,6 @@ namespace aes {
 		uint8_t galoisInverseBrute(uint8_t byte);
 		uint8_t affineTransform(uint8_t x);
 		uint8_t substituteByteInSBox(uint8_t byte);
-		void getBytesFromKeyString(std::array<uint8_t, 32>& bytes, const std::string& key);
 
 		std::vector<uint8_t> parseHexString(const std::string& hexString);
 
