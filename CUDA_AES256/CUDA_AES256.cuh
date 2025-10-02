@@ -24,7 +24,9 @@ namespace aes {
 
 	void generateRoundKeys(AES256Context& context, const std::string& hexString);
 	void generateRoundKeys(AES256Context& context, std::array<uint8_t, 32> bytes);
-	
+	cudaError_t cuda_init(int device);
+
+
 	namespace key_sched {
 		std::array<uint32_t, 60> expandWords(std::array<uint8_t, 32> keyBytes);
 		static const uint32_t rcon_array[11] = {

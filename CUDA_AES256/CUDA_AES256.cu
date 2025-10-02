@@ -20,6 +20,25 @@ namespace aes {
         generateRoundKeys(context, byteArray);
     }
 
+    cudaError_t cuda_init(int device) {
+        cudaError_t cudaStatus;
+
+        cudaStatus = cudaSetDevice(device);
+        if (cudaStatus != cudaSuccess) throw std::runtime_error("Runtime Error | cuda_init(): Error while setting device");
+
+        cudaStatus = cudaMemcpyToSymbol(cuda_con::sbox, con::sbox, sizeof(con::sbox));
+        if (cudaStatus != cudaSuccess) throw std::runtime_error("Runtime Error | cuda_init(): Error copying sbox");
+
+        cudaStatus = cudaMemcpyToSymbol(cuda_con::inverse_sbox, con::inverse_sbox, sizeof(con::inverse_sbox));
+        if (cudaStatus != cudaSuccess) throw std::runtime_error("Runtime Error | cuda_init(): Error copying inverse_sbox");
+
+        cudaStatus = cudaMemcpyToSymbol(cuda_con::mixColumnLookup, con::mixColumnLookup, sizeof(con::mixColumnLookup));
+        if (cudaStatus != cudaSuccess) throw std::runtime_error("Runtime Error | cuda_init(): Error copying mixColumnLookup");
+
+        cudaStatus = cudaMemcpyToSymbol(cuda_con::invMixColumnLookup, con::invMixColumnLookup, sizeof(con::invMixColumnLookup));
+        if (cudaStatus != cudaSuccess) throw std::runtime_error("Runtime Error | cuda_init(): Error copying invMixColumnLookup");
+    }
+
     namespace key_sched {
         std::array<uint32_t, 60> expandWords(std::array<uint8_t, 32> keyBytes) {
             std::array<uint32_t, 60> output;

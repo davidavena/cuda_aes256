@@ -14,6 +14,10 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
+
+    cudaError_t err = aes::cuda_init(0);
+    return 0;
+
     std::ifstream inputFile;
     file::openFile(inputFile, "input.txt");
     std::streamsize fileSize = file::getFileSize(inputFile);

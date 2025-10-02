@@ -95,9 +95,6 @@
     <ClInclude Include="CUDA_AES256.cuh" />
     <ClInclude Include="FileReader.hpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="FileReader.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.6.targets" />
