@@ -21,18 +21,31 @@ int main()
 
     aes::AES256Context context;
 
+    std::vector<aes::AESBlock> blocks = aes::util::convertToAESBlocks(rawData);
+
+    std::cout << "Raw data:\n";
+    aes::util::printBlock(blocks[0]);
+    std::cout << '\n';
+
     aes::generateRoundKeys(context, "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
 
     std::vector<uint8_t> newData = aes::ecb::encrypt(context, rawData);
 
+    blocks = aes::util::convertToAESBlocks(newData);
+    std::cout << "After encryption:\n";
+    aes::util::printBlock(blocks[0]);
+    std::cout << '\n';
+
     std::vector<uint8_t> decrypt = aes::ecb::decrypt(context, newData);
 
-    for (uint8_t j : decrypt) {
-        std::cout << std::hex << (size_t)j << '\n';
-    }
+    blocks = aes::util::convertToAESBlocks(decrypt);
+    std::cout << "After decryption:\n";
+    aes::util::printBlock(blocks[0]);
+    std::cout << '\n';
 
-   
 
+
+  
     std::cout << "done";
 
 
