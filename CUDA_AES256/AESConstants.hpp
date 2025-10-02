@@ -3,6 +3,19 @@
 #include "device_launch_parameters.h"
 
 namespace aes {
+	namespace util {
+		enum mixColumnLookupIndex : uint8_t {
+			Hex01 = 0,
+			Hex02 = 1,
+			Hex03 = 2,
+
+			Hex09 = 0,
+			Hex0b = 1,
+			Hex0d = 2,
+			Hex0e = 3
+		};
+	}
+
 	namespace con {
 	constexpr uint8_t sbox[256] = { 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01,
 									0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76, 0xca, 0x82, 0xc9, 0x7d,

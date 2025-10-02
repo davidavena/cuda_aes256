@@ -84,7 +84,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="CUDA_AES256.cu">
+    <CudaCompile Include="AES256.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">-std=c++17 -Xcompiler "/std:c++17" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-std=c++17 -Xcompiler "/std:c++17" %(AdditionalOptions)</AdditionalOptions>
     </CudaCompile>
@@ -92,8 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AESConstants.hpp" />
+    <ClInclude Include="AES256.hpp" />
     <ClInclude Include="CUDA_AES256.cuh" />
     <ClInclude Include="FileReader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CUDA_AES256.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

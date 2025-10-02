@@ -1,6 +1,6 @@
 ﻿
 
-#include "CUDA_AES256.cuh"
+#include "AES256.hpp"
 #include "FileReader.hpp"
 #include <stdio.h>
 
@@ -14,45 +14,24 @@ __global__ void addKernel(int *c, const int *a, const int *b)
 
 int main()
 {
-
-    cudaError_t err = aes::cuda_init(0);
-    return 0;
-
-    std::ifstream inputFile;
-    file::openFile(inputFile, "input.txt");
-    std::streamsize fileSize = file::getFileSize(inputFile);
-    std::vector<char> rawFileData(fileSize);
-    file::extractBytes(inputFile, rawFileData, fileSize);
-    file::closeFile(inputFile);
-
-    //aes::util::computeSBox();
-    //aes::util::computeInverseSBox();
+    std::vector<uint8_t> rawData = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
 
     aes::AES256Context context;
 
-    std::string key = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f";
-    //std::vector<uint8_t> bytes = aes::util::parseHexString(key);
-    //std::array<uint8_t, 32> b;
-    //std::copy(bytes.begin(), bytes.end(), b.begin());
-    //std::array<uint32_t, 60> expand = aes::key_sched::expandWords(b);
-    //for (uint32_t key : expand) {
-    //    //std::cout << key << '\n';
-    //}
-    aes::generateRoundKeys(context, key);
-    aes::AESBlock block;
-    aes::transform::addRoundKey(block, context.roundkeys[0]);
-    aes::transform::shiftRows(block);
-    aes::util::printBlock(block);
-    aes::transform::mixColumns(block);
-    aes::util::printBlock(block);
-    aes::transform::inverseMixColumns(block);
-    aes::util::printBlock(block);
+    aes::generateRoundKeys(context, "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
 
-    uint32_t byte = 0x1a2b3c4d;
-    byte = aes::util::subWord(byte);
-    //std::cout << std::hex << (size_t)aes::util::getByteFromWord(byte, 1) << '\n';
-    //std::cout << (size_t)aes::sbox[0x3c];
-    uint8_t newByte = 255;
+    
+
+    std::vector<uint8_t> newData = aes::ecb::encrypt(context, rawData);
+
+    std::vector<aes::AESBlock> blocks = aes::util::convertToAESBlocks(newData);
+
+    aes::util::printBlock(blocks[0]);
+
+
+
+
+
 
     return 0;
 }
